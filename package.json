@@ -1,20 +1,36 @@
 {
-  "name": "kursuch",
-  "version": "0.1.0",
-  "private": true,
+  "name": "kursach",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "build": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fjodor-rybakov/kursach.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fjodor-rybakov/kursach/issues"
+  },
+  "homepage": "https://github.com/fjodor-rybakov/kursach#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0"
+  },
   "dependencies": {
-    "autobind-decorator": "^2.1.0",
-    "bind-decorator": "^1.0.11",
-    "mobx": "^5.1.0",
-    "mobx-react": "^5.2.6",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "react-scripts": "1.1.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "restify": "^7.2.1"
   }
 }
