@@ -1,1 +1,1 @@
-# kursovaya
+# kursuch
