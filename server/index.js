@@ -1,10 +1,13 @@
 const config  = require('./config'),
-    restify = require('restify');
+    restify = require('restify'),
+    mysql = require('mysql');
 
 const server = restify.createServer({
     name: config.name,
     version: config.version
 });
+
+var connection = config.db.get;
 
 server.get('/*', restify.plugins.serveStatic({
     directory: './public', // раположение localhost(адрес)
