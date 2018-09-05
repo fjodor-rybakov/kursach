@@ -9,8 +9,8 @@ module.exports = {
         get : mysql.createConnection({
             host     : 'localhost',
             user     : 'root',
-            password : '',
-            database : 'test'
+            password : 'qwerty123',
+            database : 'recommend_service_book'
         })
     }
 };
