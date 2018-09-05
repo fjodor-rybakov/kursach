@@ -35,6 +35,7 @@
     "mysql": "^2.16.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "restify": "^7.2.1"
+    "restify": "^7.2.1",
+    "restify-errors": "^6.1.1"
   }
 }

@@ -1,13 +1,13 @@
 const config  = require('./config'),
     restify = require('restify'),
-    mysql = require('mysql');
+    restifyErrors = require('restify-errors');
 
 const server = restify.createServer({
     name: config.name,
     version: config.version
 });
 
-let connection = config.db.get;
+let database = config.db.get;
 
 server.get('/*', restify.plugins.serveStatic({
     directory: './public', // раположение localhost(адрес)
@@ -18,13 +18,12 @@ server.use(restify.plugins.acceptParser(server.acceptable));
 server.use(restify.plugins.queryParser());
 server.use(restify.plugins.bodyParser());
 
-connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
-    if (err) throw err;
-
-    console.log('The solution is: ', rows[0].solution);
+server.on('restifyError', (req, res, err, callback) => { // Обработка ошибок сервера
+    return callback();
 });
 
 server.listen(config.port, () => { // Подключаемся к серверу
-    console.log(connection);
     console.log(`Server is listening on port ${config.port}`);
+    require("./routes/routes")(server, database);
+    require("./requests/requests")(server, database);
 });
