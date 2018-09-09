@@ -12,10 +12,10 @@ class HomePage extends Component {
                 </div>
                 <h1 className={"site-name"}>Order task</h1>
                 <div className={"about-us"}>
-                    <p>Какая-то инфа</p>
+                    <p>Some info...</p>
                 </div>
                 <div className={"button-order"}>
-                    <Link className={"button"} to={"/signup"}>Сделать заказ</Link>
+                    <Link className={"button"} to={"/signup"}>Create order</Link>
                 </div>
             </div>
         );
