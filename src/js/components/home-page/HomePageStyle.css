@@ -41,13 +41,11 @@ a:hover {
 }
 
 .button {
-    width: 100px;
-    height: 40px;
+    padding: 10px 20px;
     border: 1px black solid;
     text-align: center;
 }
 
-.button-order .button {
-    display: block;
-    margin: auto;
+.button-order {
+    text-align: center;
 }

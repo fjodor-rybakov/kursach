@@ -10,21 +10,23 @@ class SignUp extends Component {
 
     render() {
         return (
-            <div>
+            <div className={"container"}>
                 <form>
-                    <label htmlFor={"first_name"}>
-                        <input id={"first_name"} type={"text"} name={"first_name"} required="required"/>
-                    </label>
-                    <label htmlFor={"last_name"}>
-                        <input id={"last_name"} type={"text"} name={"last_name"} required="required"/>
-                    </label>
-                    <label htmlFor={"login"}>
-                        <input id={"login"} type={"text"} name={"login"} required="required"/>
-                    </label>
-                    <label htmlFor={"password"}>
-                        <input id={"password"} type={"password"} name={"password"} required="required"/>
-                    </label>
-                    <button onClick={this.handleSubmit}>Sign Up</button>
+                    <div className={"form-group"}>
+                        <label htmlFor={"first_name"}>
+                            <input className={"form-control"} id={"first_name"} type={"text"} name={"first_name"} required="required"/>
+                        </label>
+                        <label htmlFor={"last_name"}>
+                            <input className={"form-control"} id={"last_name"} type={"text"} name={"last_name"} required="required"/>
+                        </label>
+                        <label htmlFor={"login"}>
+                            <input className={"form-control"} id={"login"} type={"text"} name={"login"} required="required"/>
+                        </label>
+                        <label htmlFor={"password"}>
+                            <input className={"form-control"} id={"password"} type={"password"} name={"password"} required="required"/>
+                        </label>
+                        <button onClick={this.handleSubmit}>Sign Up</button>
+                    </div>
                 </form>
                 <div>
                     <Link to={"/signin"}>Sign In</Link>

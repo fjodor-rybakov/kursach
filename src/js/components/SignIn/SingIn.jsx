@@ -10,15 +10,17 @@ class SingIn extends Component {
 
     render() {
         return (
-            <div>
+            <div className={"container"}>
                 <form>
-                    <label htmlFor={"login"}>
-                        <input id={"login"} type={"text"} name={"login"} required="required"/>
-                    </label>
-                    <label htmlFor={"password"}>
-                        <input id={"password"} type={"password"} name={"password"} required="required"/>
-                    </label>
-                    <button onClick={this.handleSubmit}>Sign In</button>
+                    <div className={"form-group"}>
+                        <label htmlFor={"login"}>
+                            <input className={"form-control"} id={"login"} type={"text"} name={"login"} required="required"/>
+                        </label>
+                        <label htmlFor={"password"}>
+                            <input className={"form-control"} id={"password"} type={"password"} name={"password"} required="required"/>
+                        </label>
+                        <button onClick={this.handleSubmit}>Sign In</button>
+                    </div>
                 </form>
                 <div>
                     <Link to={"/signup"}>Sign Up</Link>
