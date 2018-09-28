@@ -1,13 +1,13 @@
 import * as React from 'react';
 import ReactDOM from "react-dom";
 import { HomePage } from "./components/home-page/HomePage";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { HashRouter, Switch, Route } from "react-router-dom";
 import { NotFound } from "./components/not-found/NotFound";
 import {SingIn} from "./components/SignIn/SingIn";
 import {SignUp} from "./components/SignUp/SignUp";
 
 ReactDOM.render(
-    <BrowserRouter>
+    <HashRouter>
         <Switch>
             <Route
                 exact={true}
@@ -26,6 +26,6 @@ ReactDOM.render(
             />
             <Route component={NotFound}/>
         </Switch>
-    </BrowserRouter>,
+    </HashRouter>,
     document.getElementById("root")
 );
