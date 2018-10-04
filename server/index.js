@@ -9,8 +9,8 @@ const server = restify.createServer({
 
 let database = config.db.get;
 
-server.get('/*', restify.plugins.serveStatic({
-    directory: './public', // раположение localhost(адрес)
+server.get('*', restify.plugins.serveStatic({
+    directory: 'public', // раположение localhost(адрес)
     default: 'index.html'
 }));
 
