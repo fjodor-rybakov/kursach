@@ -1,4 +1,5 @@
 const errs = require('restify-errors');
+const utils = require("../utils/utils");
 
 module.exports = (server, database) => {
     const requestsDB = require("../requests/requests");
