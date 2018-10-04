@@ -25,5 +25,4 @@ server.on('restifyError', (req, res, err, callback) => { // Обработка �
 server.listen(config.port, () => { // Подключаемся к серверу
     console.log(`Server is listening on port ${config.port}`);
     require("./routes/routes")(server, database);
-    require("./requests/requests")(server, database);
 });
