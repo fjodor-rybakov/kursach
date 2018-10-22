@@ -1,10 +1,11 @@
-const errs = require('restify-errors');
-const utils = require("../utils/utils");
+const errs = require('restify-errors'),
+    utils = require("../utils/utils"),
+    requestsDB = require("../requests/requests"),
+    jwt = require('jsonwebtoken');
 
-module.exports = (server, database) => {
-    const requestsDB = require("../requests/requests");
-
-    server.post("/v1/signUp", getSignUp);
+module.exports = (server, database, secret) => {
+    server.post("/api/signUp", getSignUp);
+    server.post("/api/signIn", getSignIn);
 
     function getSignUp(req, res, next) {
         const data = JSON.parse(req.body);
@@ -18,5 +19,22 @@ module.exports = (server, database) => {
             .catch(() => {
                 res.send("email is already exist");
             });
+    }
+
+    function getSignIn(req, res, next) {
+        const data = JSON.parse(req.body);
+        if (!utils.isset(data.email, data.password)) {
+            return next(new errs.InvalidArgumentError("Not enough body data"));
+        }
+        requestsDB.checkUser(database, data, next)
+            .then((data) => {
+                console.log(data);
+                let token = jwt.sign(data, secret, {
+                    expiresIn: '1m'
+                });
+                let {iat, exp} = jwt.decode(token);
+                res.send({iat, exp, token})
+            })
+            .catch(console.log);
     }
 };

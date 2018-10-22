@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from "react";
 import {Link} from "react-router-dom";
-import { isUndefined } from "lodash";
+import isUndefined from "lodash";
 import {observer} from "mobx-react";
 import {SignUpStore} from "./SignUpStore";
 import autobind from "autobind-decorator";
@@ -10,7 +10,7 @@ import autobind from "autobind-decorator";
 @autobind
 class SignUp extends Component {
     store = new SignUpStore();
-    
+
     constructor(props) {
         super(props);
         this.store.validateErr = "";
@@ -29,7 +29,7 @@ class SignUp extends Component {
         const repeatPass = this.repeatPasswordRef.current.value;
         const password = this.passwordRef.current.value;
         const email = this.emailRef.current.value;
-        if (!this.validateForm(email, password, repeatPass)){
+        if (!this.validateForm(email, password, repeatPass)) {
             return;
         }
         this.sendFormData(email, password);
@@ -40,17 +40,17 @@ class SignUp extends Component {
             email: email,
             password: password
         };
-        fetch("/v1/signUp", {method: "POST", body: JSON.stringify(body) })
+        fetch("/api/signUp", {method: "POST", body: JSON.stringify(body)})
             .then(res => res.json())
             .then(data => this.store.validateErr = data);
     }
 
-    validateForm(email, password, repeatPass){
+    validateForm(email, password, repeatPass) {
         if (repeatPass !== password) {
             this.store.validateErr = "Пароли не совпадают";
             return false;
         }
-        if (password === "" || email=== "") {
+        if (password === "" || email === "") {
             this.store.validateErr = "Все поля должны быть заполнены";
             return false;
         }
@@ -75,7 +75,8 @@ class SignUp extends Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Password</label>
-                        <input type="password" ref={this.repeatPasswordRef} className="form-control" placeholder="Password"/>
+                        <input type="password" ref={this.repeatPasswordRef} className="form-control"
+                               placeholder="Password"/>
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
@@ -88,4 +89,5 @@ class SignUp extends Component {
         );
     }
 }
+
 export {SignUp}

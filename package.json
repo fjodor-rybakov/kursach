@@ -38,6 +38,7 @@
     "autobind-decorator": "^2.1.0",
     "css-loader": "^1.0.0",
     "extract-text-webpack-plugin": "^3.0.2",
+    "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.11",
     "mobx": "^5.1.0",
     "mobx-react": "^5.2.6",
@@ -47,6 +48,7 @@
     "react-router-dom": "^4.3.1",
     "restify": "^7.2.1",
     "restify-errors": "^6.1.1",
+    "restify-jwt-community": "^1.0.8",
     "style-loader": "^0.23.0"
   }
 }

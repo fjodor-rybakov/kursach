@@ -12,5 +12,8 @@ module.exports = {
             password : 'qwerty123',
             database : 'ordertask'
         })
+    },
+    "jwt": {
+        "secret": "&@$!changeme!$@&"
     }
 };

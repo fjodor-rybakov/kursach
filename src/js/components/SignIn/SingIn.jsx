@@ -8,6 +8,15 @@ class SingIn extends Component {
         console.log("on submit sign in");
     }
 
+    componentDidMount() {
+        fetch("/api/signIn", {method: "POST", body: JSON.stringify({
+                email: "user@gmail.com",
+                password: "Password123"
+            })})
+            .then(res => res.json())
+            .then((data) => localStorage.setItem("token", data.token));
+    }
+
     render() {
         return (
             <div className={"container"}>

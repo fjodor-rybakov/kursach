@@ -48,7 +48,7 @@ exports.addUser = function(database, data, next) {
             if (err) {
                 return next(new errs.BadGatewayError(err));
             }
-            if (result.length !== 0) {
+            if (result.length === 0) {
                 return reject(false);
             }
         });
@@ -61,4 +61,20 @@ exports.addUser = function(database, data, next) {
             return resolve(true);
         });
     });
-}
+};
+
+exports.checkUser = function (database, data, next) {
+    return new Promise(async (resolve, reject) => {
+        let sql = `SELECT * FROM user WHERE email = '${data.email}' AND password = '${data.password}'`;
+        database.query(sql, function (err, result) {
+            if (err) {
+                return next(new errs.BadGatewayError(err));
+            }
+            if (result.length === 0) {
+                return reject(undefined);
+            } else {
+                return resolve(data);
+            }
+        })
+    })
+};
