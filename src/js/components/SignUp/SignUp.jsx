@@ -11,6 +11,7 @@ class SignUp extends Component {
     constructor(props) {
         super(props);
         this.validateErr = "";
+        this.res = "";
         this.emailRef = React.createRef();
         this.passwordRef = React.createRef();
         this.repeatPasswordRef = React.createRef();
@@ -39,7 +40,13 @@ class SignUp extends Component {
         };
         fetch("/v1/signUp", {method: "POST", body: JSON.stringify(body) })
             .then(res => res.json())
-            .then(data => this.validateErr = data);
+            .then( (data) => {
+                this.res = data;
+                console.log(data);
+                if (this.res === "success") {
+                    window.location.href = "/profile";
+                }
+            });
     }
 
     validateForm(email, password, repeatPass){
@@ -77,7 +84,7 @@ class SignUp extends Component {
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
                 {
-                    this.validateErr !== ""
+                    this.validateErr !== "" && this.res !== "success"
                         ? <div className="alert alert-danger" role="alert">{this.validateErr}</div>
                         : void 0
                 }
