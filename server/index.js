@@ -20,7 +20,7 @@ server.use(plugins.queryParser());
 server.use(plugins.bodyParser());
 server.use(plugins.authorizationParser());
 server.use(rjwt(config.jwt).unless({
-    path: ['/', '/dist/bundle.js']
+    path: ['/api/signIn', '/api/signUp', '/', '/dist/bundle.js']
 }));
 
 server.on("restifyError", (req, res, err, callback) => { // Обработка ошибок сервера

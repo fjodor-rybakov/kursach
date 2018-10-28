@@ -19,9 +19,13 @@ class SingIn extends Component {
             password: password
         });
         await fetch("/api/signIn", {method: "POST", body: data})
-            .then(res => res.json())
-            .then((data) => localStorage.setItem("token", data.token));
-        await console.log(localStorage.getItem("token"));
+            .then(res => {
+                if (res.status === 200) {
+                    return res.json();
+                }
+            })
+            .then(data => localStorage.setItem("token", data.token))
+            .catch(() => this.store.validateErr = "Такого пользователя не существует");
     }
 
     handleChangeLogin(event) {
@@ -66,6 +70,11 @@ class SingIn extends Component {
                     </div>
                     <button onClick={this.handleSubmit} className="btn btn-primary">Sign In</button>
                 </form>
+                {
+                    this.store.validateErr !== ""
+                        ? <div className="alert alert-danger" role="alert">{this.store.validateErr}</div>
+                        : void 0
+                }
             </div>
         );
     }

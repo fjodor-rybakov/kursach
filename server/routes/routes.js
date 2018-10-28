@@ -35,6 +35,8 @@ module.exports = (server, database, secret) => {
                 let {iat, exp} = jwt.decode(token);
                 res.send({iat, exp, token})
             })
-            .catch(console.log);
+            .catch(() => {
+                return next(new errs.InvalidArgumentError("Unknown user"));
+            });
     }
 };
