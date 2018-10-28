@@ -4,9 +4,9 @@ import {Link} from "react-router-dom";
 import {SignInStore} from "./SignInStore";
 import {observer} from "mobx-react";
 import autobind from "autobind-decorator";
-import {isUndefined} from "lodash";
 
 @autobind
+@observer
 class SingIn extends Component {
     store = new SignInStore();
 
