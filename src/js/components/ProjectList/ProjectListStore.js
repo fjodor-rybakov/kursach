@@ -2,8 +2,8 @@ import autobind from "autobind-decorator";
 import {observable} from "mobx";
 
 @autobind
-class ProfileStore {
-    @observable data = {};
+class ProjectListStore {
+    @observable data = [];
 }
 
-export { ProfileStore }
+export { ProjectListStore }

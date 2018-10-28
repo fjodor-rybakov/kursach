@@ -75,3 +75,47 @@ exports.checkUser = function (database, data, next) {
         })
     })
 };
+
+exports.getProfile = function (database, data, next) {
+    return new Promise(async (resolve, reject) => {
+        let sql = `SELECT * FROM user WHERE id_user = ${data.id}`;
+        database.query(sql, function (err, result) {
+            if (err) {
+                return next(new errs.BadGatewayError(err));
+            }
+            if (result.length === 0) {
+                return reject(undefined);
+            } else {
+                return resolve(result);
+            }
+        })
+    })
+};
+
+exports.getProjects = function (database, next) {
+    return new Promise(async (resolve, reject) => {
+        let sql = `SELECT * FROM project`;
+        database.query(sql, function (err, result) {
+            if (err) {
+                return next(new errs.BadGatewayError(err));
+            }
+            return resolve(result);
+        })
+    })
+};
+
+exports.getProject = function (database, data, next) {
+    return new Promise(async (resolve, reject) => {
+        let sql = `SELECT * FROM project WHERE id_project = ${data.id}`;
+        database.query(sql, function (err, result) {
+            if (err) {
+                return next(new errs.BadGatewayError(err));
+            }
+            if (result.length === 0) {
+                return reject(undefined);
+            } else {
+                return resolve(result[0]);
+            }
+        })
+    })
+};

@@ -6,6 +6,8 @@ import { NotFound } from "./components/not-found/NotFound";
 import {SingIn} from "./components/SignIn/SingIn";
 import {SignUp} from "./components/SignUp/SignUp";
 import {Profile} from "./components/Profile/Profile";
+import {ProjectList} from "./components/ProjectList/ProjectList";
+import {Project} from "./components/Project/Project";
 
 ReactDOM.render(
     <HashRouter>
@@ -29,6 +31,16 @@ ReactDOM.render(
                 exact={true}
                 path={"/profile"}
                 component={Profile}
+            />
+            <Route
+                exact={true}
+                path={"/projectList"}
+                component={ProjectList}
+            />
+            <Route
+                exact={true}
+                path={"/project/:id"}
+                component={Project}
             />
             <Route component={NotFound}/>
         </Switch>
