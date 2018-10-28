@@ -9,9 +9,15 @@ class Profile extends Component {
         super(props);
     }
 
+    componentDidMount() {
+        fetch("/api/getProfile", {method: "GET", body: JSON.stringify({id: 1})})
+            .then(res => res.json())
+            .then(data => this.store.data = data);
+    }
+
     render() {
         return (
-            <div>Hello</div>
+            <div>{this.store.data}</div>
         );
     }
 }

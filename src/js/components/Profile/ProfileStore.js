@@ -3,7 +3,7 @@ import {observable} from "mobx";
 
 @autobind
 class ProfileStore {
-
+   @observable data = {};
 }
 
 export { ProfileStore }

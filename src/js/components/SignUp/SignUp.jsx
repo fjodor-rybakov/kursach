@@ -1,36 +1,41 @@
 import * as React from 'react';
 import {Component} from "react";
 import {Link} from "react-router-dom";
-import {isUndefined} from "lodash";
-import {observable} from "mobx";
+import isUndefined from "lodash";
 import {observer} from "mobx-react";
+import {SignUpStore} from "./SignUpStore";
+import autobind from "autobind-decorator";
 
 @observer
+@autobind
 class SignUp extends Component {
-    @observable validateErr = "";
+    store = new SignUpStore();
+
     constructor(props) {
         super(props);
-        this.validateErr = "";
-        this.res = "";
-        this.emailRef = React.createRef();
-        this.passwordRef = React.createRef();
-        this.repeatPasswordRef = React.createRef();
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.store.validateErr = "";
+    }
+
+    handleChangeLogin(event) {
+        console.log(event.target.value);
+        this.store.login = event.target.value;
+    }
+
+    handleChangePassword(event) {
+        this.store.password = event.target.value;
+    }
+
+    handleChangeRepeatPassword(event) {
+        this.store.repeatPassword = event.target.value;
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        if (isUndefined(this.repeatPasswordRef.current) || isUndefined(this.passwordRef.current) ||
-            isUndefined(this.emailRef.current)) {
+        console.log(this.store.login,this.store.password, this.store.repeatPassword);
+        if (!this.validateForm(this.store.login,this.store.password, this.store.repeatPassword)) {
             return;
         }
-        const repeatPass = this.repeatPasswordRef.current.value;
-        const password = this.passwordRef.current.value;
-        const email = this.emailRef.current.value;
-        if (!this.validateForm(email, password, repeatPass)){
-            return;
-        }
-        this.sendFormData(email, password);
+        this.sendFormData(this.store.login, this.store.password);
     }
 
     sendFormData(email, password) {
@@ -38,24 +43,18 @@ class SignUp extends Component {
             email: email,
             password: password
         };
-        fetch("/v1/signUp", {method: "POST", body: JSON.stringify(body) })
+        fetch("/api/signUp", {method: "POST", body: JSON.stringify(body)})
             .then(res => res.json())
-            .then( (data) => {
-                this.res = data;
-                console.log(data);
-                if (this.res === "success") {
-                    window.location.href = "/profile";
-                }
-            });
+            .then(data => this.store.validateErr = data);
     }
 
-    validateForm(email, password, repeatPass){
+    validateForm(email, password, repeatPass) {
         if (repeatPass !== password) {
-            this.validateErr = "Пароли не совпадают";
+            this.store.validateErr = "Пароли не совпадают";
             return false;
         }
-        if (password === "" || email=== "") {
-            this.validateErr = "Все поля должны быть заполнены";
+        if (password === "" || email === "") {
+            this.store.validateErr = "Все поля должны быть заполнены";
             return false;
         }
         return true;
@@ -71,25 +70,40 @@ class SignUp extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="exampleInputEmail1">Email address</label>
-                        <input name="email" className="form-control" ref={this.emailRef} placeholder="Enter email"/>
+                        <input
+                            name="email"
+                            onChange={this.handleChangeLogin}
+                            className="form-control"
+                            placeholder="Enter email"
+                        />
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Password</label>
-                        <input type="password" ref={this.passwordRef} className="form-control" placeholder="Password"/>
+                        <input
+                            type="password"
+                            className="form-control"
+                            placeholder="Password"
+                            onChange={this.handleChangePassword}
+                        />
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Password</label>
-                        <input type="password" ref={this.repeatPasswordRef} className="form-control" placeholder="Password"/>
+                        <input
+                            type="password"
+                            className="form-control"
+                            onChange={this.handleChangeRepeatPassword}
+                            placeholder="Password"/>
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
                 {
-                    this.validateErr !== "" && this.res !== "success"
-                        ? <div className="alert alert-danger" role="alert">{this.validateErr}</div>
+                    this.store.validateErr !== ""
+                        ? <div className="alert alert-danger" role="alert">{this.store.validateErr}</div>
                         : void 0
                 }
             </div>
         );
     }
 }
+
 export {SignUp}

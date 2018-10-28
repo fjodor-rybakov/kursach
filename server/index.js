@@ -1,6 +1,7 @@
-const config  = require('./config'),
-    restify = require('restify'),
-    restifyErrors = require('restify-errors');
+const config  = require("./config"),
+    restify = require("restify"),
+    plugins = restify.plugins,
+    rjwt = require('restify-jwt-community');
 
 const server = restify.createServer({
     name: config.name,
@@ -9,21 +10,24 @@ const server = restify.createServer({
 
 let database = config.db.get;
 
-server.get('/*', restify.plugins.serveStatic({
-    directory: './public', // раположение localhost(адрес)
-    default: 'index.html'
+server.get("*", plugins.serveStatic({
+    directory: "public", // раположение localhost(адрес)
+    default: "index.html"
 }));
 
-server.use(restify.plugins.acceptParser(server.acceptable));
-server.use(restify.plugins.queryParser());
-server.use(restify.plugins.bodyParser());
+server.use(plugins.acceptParser(server.acceptable));
+server.use(plugins.queryParser());
+server.use(plugins.bodyParser());
+server.use(plugins.authorizationParser());
+server.use(rjwt(config.jwt).unless({
+    path: ['/api/signIn', '/api/signUp', '/', '/dist/bundle.js']
+}));
 
-server.on('restifyError', (req, res, err, callback) => { // Обработка ошибок сервера
+server.on("restifyError", (req, res, err, callback) => { // Обработка ошибок сервера
     return callback();
 });
 
 server.listen(config.port, () => { // Подключаемся к серверу
     console.log(`Server is listening on port ${config.port}`);
-    require("./routes/routes")(server, database);
-    require("./requests/requests")(server, database);
+    require("./routes/routes")(server, database, config.jwt.secret);
 });

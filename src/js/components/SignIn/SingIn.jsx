@@ -1,53 +1,39 @@
 import * as React from 'react';
-import { Component } from "react";
+import {Component} from "react";
 import {Link} from "react-router-dom";
-import {isUndefined} from "lodash";
+import {SignInStore} from "./SignInStore";
+import {observer} from "mobx-react";
 import autobind from "autobind-decorator";
+import {isUndefined} from "lodash";
 
 @autobind
 class SingIn extends Component {
+    store = new SignInStore();
 
-    constructor(props){
-        super(props);
-        this.validateErr = "";
-        this.emailRef = React.createRef();
-        this.passwordRef = React.createRef();
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        console.log("on submit sign in");
-        if (isUndefined(this.passwordRef.current) || isUndefined(this.emailRef.current)) {
-            return;
-        }
-        const password = this.passwordRef.current.value;
-        const email = this.emailRef.current.value;
-        if (!this.validateForm(email, password)){
-            return;
-        }
-        this.sendFormData(email, password);
-    }
-
-    sendFormData(email, password) {
-        console.log("send");
-        const body = {
-            email: email,
+    async handleSubmit(event) {
+        await event.preventDefault();
+        const login = this.store.login;
+        const password = this.store.password;
+        const data = JSON.stringify({
+            email: login,
             password: password
-        };
-        fetch("/v1/signIn", {method: "POST", body: JSON.stringify(body) })
-            .then(res => res.json())
-            .then( (data) => {
-                this.res = data;
-                console.log(data);
-            });
+        });
+        await fetch("/api/signIn", {method: "POST", body: data})
+            .then(res => {
+                if (res.status === 200) {
+                    return res.json();
+                }
+            })
+            .then(data => localStorage.setItem("token", data.token))
+            .catch(() => this.store.validateErr = "Такого пользователя не существует");
     }
 
-    validateForm(email, password, repeatPass){
-        if (password === "" || email=== "") {
-            this.validateErr = "Все поля должны быть заполнены";
-            return false;
-        }
-        return true;
+    handleChangeLogin(event) {
+        this.store.login = event.target.value;
+    }
+
+    handleChangePassword(event) {
+        this.store.password = event.target.value;
     }
 
     render() {
@@ -55,22 +41,38 @@ class SingIn extends Component {
             <div className={"container"}>
                 <h1>Вход</h1>
                 <div>
-                    <Link to={"/signup"}>Sign Un</Link>
+                    <Link to={"/signup"}>Sign Up</Link>
                 </div>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">Email address</label>
-                        <input name="email" className="form-control" ref={this.emailRef} placeholder="Enter email"/>
+                <form>
+                    <div className={"form-group"}>
+                        <label htmlFor={"login"}>Login</label>
+                        <input
+                            className={"form-control"}
+                            id={"login"}
+                            type={"text"}
+                            name={"login"}
+                            required={"required"}
+                            placeholder={"Enter email"}
+                            onChange={this.handleChangeLogin}
+                        />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Password</label>
-                        <input type="password" ref={this.passwordRef} className="form-control" placeholder="Password"/>
+                    <div className={"form-group"}>
+                        <label htmlFor={"password"}>Password</label>
+                        <input
+                            className={"form-control"}
+                            id={"password"}
+                            type={"password"}
+                            name={"password"}
+                            required={"required"}
+                            placeholder={"Enter password"}
+                            onChange={this.handleChangePassword}
+                        />
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button onClick={this.handleSubmit} className="btn btn-primary">Sign In</button>
                 </form>
                 {
-                    this.validateErr !== "" && this.res !== "success"
-                        ? <div className="alert alert-danger" role="alert">{this.validateErr}</div>
+                    this.store.validateErr !== ""
+                        ? <div className="alert alert-danger" role="alert">{this.store.validateErr}</div>
                         : void 0
                 }
             </div>
@@ -78,4 +80,4 @@ class SingIn extends Component {
     }
 }
 
-export { SingIn }
+export {SingIn}
