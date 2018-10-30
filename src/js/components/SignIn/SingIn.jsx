@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {SignInStore} from "./SignInStore";
 import {observer} from "mobx-react";
 import autobind from "autobind-decorator";
+import { Redirect } from "react-router";
 
 @autobind
 @observer
@@ -24,8 +25,14 @@ class SingIn extends Component {
                     return res.json();
                 }
             })
-            .then(data => localStorage.setItem("token", data.token))
+            .then(data => this.handleAcceptUser(data))
             .catch(() => this.store.validateErr = "Такого пользователя не существует");
+    }
+
+    handleAcceptUser(data) {
+        localStorage.setItem("token", data.token);
+        console.log("token", data);
+        location.reload();
     }
 
     handleChangeLogin(event) {
@@ -37,46 +44,50 @@ class SingIn extends Component {
     }
 
     render() {
-        return (
-            <div className={"container"}>
-                <h1>Вход</h1>
-                <div>
-                    <Link to={"/signup"}>Sign Up</Link>
+        if (localStorage.getItem("token")) {
+            return <Redirect to='/' />
+        } else  {
+            return (
+                <div className={"container"}>
+                    <h1>Вход</h1>
+                    <div>
+                        <Link to={"/signup"}>Sign Up</Link>
+                    </div>
+                    <form>
+                        <div className={"form-group"}>
+                            <label htmlFor={"login"}>Login</label>
+                            <input
+                                className={"form-control"}
+                                id={"login"}
+                                type={"text"}
+                                name={"login"}
+                                required={"required"}
+                                placeholder={"Enter email"}
+                                onChange={this.handleChangeLogin}
+                            />
+                        </div>
+                        <div className={"form-group"}>
+                            <label htmlFor={"password"}>Password</label>
+                            <input
+                                className={"form-control"}
+                                id={"password"}
+                                type={"password"}
+                                name={"password"}
+                                required={"required"}
+                                placeholder={"Enter password"}
+                                onChange={this.handleChangePassword}
+                            />
+                        </div>
+                        <button onClick={this.handleSubmit} className={"btn btn-primary"}>Sign In</button>
+                    </form>
+                    {
+                        this.store.validateErr !== ""
+                            ? <div className={"alert alert-danger"} role={"alert"}>{this.store.validateErr}</div>
+                            : void 0
+                    }
                 </div>
-                <form>
-                    <div className={"form-group"}>
-                        <label htmlFor={"login"}>Login</label>
-                        <input
-                            className={"form-control"}
-                            id={"login"}
-                            type={"text"}
-                            name={"login"}
-                            required={"required"}
-                            placeholder={"Enter email"}
-                            onChange={this.handleChangeLogin}
-                        />
-                    </div>
-                    <div className={"form-group"}>
-                        <label htmlFor={"password"}>Password</label>
-                        <input
-                            className={"form-control"}
-                            id={"password"}
-                            type={"password"}
-                            name={"password"}
-                            required={"required"}
-                            placeholder={"Enter password"}
-                            onChange={this.handleChangePassword}
-                        />
-                    </div>
-                    <button onClick={this.handleSubmit} className="btn btn-primary">Sign In</button>
-                </form>
-                {
-                    this.store.validateErr !== ""
-                        ? <div className="alert alert-danger" role="alert">{this.store.validateErr}</div>
-                        : void 0
-                }
-            </div>
-        );
+            );
+        }
     }
 }
 

@@ -13,16 +13,13 @@ class Project extends Component {
     }
 
     async componentDidMount() {
-        // let id = window.location.pathname.split('/');
-        // id = id[id.length - 1];
-        // console.log(window.location.pathname);
-        // await fetch("/api/getProject", {method: "POST", body: JSON.stringify({id: id})})
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         this.data = data;
-        //     });
-        // console.log(this.data);
-        //TODO достать id из url
+        let id = location.hash.split('/')[2];
+        await fetch("/api/getProject", {method: "POST", body: JSON.stringify({id: id})})
+            .then(res => res.json())
+            .then(data => {
+                this.data = data;
+            });
+        console.log(this.data);
     }
 
     render() {

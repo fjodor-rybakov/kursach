@@ -7,20 +7,29 @@ import autobind from "autobind-decorator";
 @observer
 @autobind
 class HomePage extends Component {
+    handleLogOut() {
+        localStorage.clear();
+        location.reload();
+    }
 
     render() {
         return(
             <div>
                 <div className={"authorization"}>
-                    <Link className={"button"} to={"/signin"}>Sign In</Link>
-                    <Link className={"button"} to={"/signup"}>Sign Up</Link>
+                    {!localStorage.getItem("token") ?
+                        <>
+                            <Link className={"btn btn-primary"} id={"signin"} to={"/signin"}>Sign In</Link>
+                            <Link className={"btn btn-primary"} id={"signup"} to={"/signup"}>Sign Up</Link>
+                        </>
+                    :
+                        <button className={"btn btn-primary"} id={"logout"} onClick={this.handleLogOut}>Log Out</button>}
                 </div>
                 <h1 className={"site-name"}>Order task</h1>
                 <div className={"about-us"}>
                     <p>Some info...</p>
                 </div>
                 <p className={"button-order"}>
-                    <Link className={"button"} to={"/signup"}>Create order</Link>
+                    <Link className={"btn btn-primary"} id={"create-project"} to={"/signup"}>Create order</Link>
                 </p>
             </div>
         );

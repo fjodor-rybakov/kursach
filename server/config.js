@@ -7,11 +7,10 @@ module.exports = {
     port: process.env.PORT || 3000,
     db: {
         get: mysql.createConnection({
-            host     : 'localhost',
-            port     : '3306',
-            user     : 'root',
+            host     : 'www.db4free.net',
+            user     : 'qwerty251',
             password : 'qwerty123',
-            database : 'site'
+            database : 'ordertask'
         })
     },
     "jwt": {

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Component} from "react";
 import {Link} from "react-router-dom";
-import isUndefined from "lodash";
 import {observer} from "mobx-react";
 import {SignUpStore} from "./SignUpStore";
 import autobind from "autobind-decorator";
+import { Redirect } from "react-router";
 
 @observer
 @autobind
@@ -61,48 +61,52 @@ class SignUp extends Component {
     }
 
     render() {
-        return (
-            <div className={"container"}>
-                <h1>Регистрация</h1>
-                <div>
-                    <Link to={"/signin"}>Sign In</Link>
+        if (localStorage.getItem("token")) {
+            return <Redirect to='/' />
+        } else {
+            return (
+                <div className={"container"}>
+                    <h1>Регистрация</h1>
+                    <div>
+                        <Link to={"/signin"}>Sign In</Link>
+                    </div>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputEmail1">Email address</label>
+                            <input
+                                name="email"
+                                onChange={this.handleChangeLogin}
+                                className="form-control"
+                                placeholder="Enter email"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Password</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                placeholder="Password"
+                                onChange={this.handleChangePassword}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Password</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                onChange={this.handleChangeRepeatPassword}
+                                placeholder="Password"/>
+                        </div>
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                    </form>
+                    {
+                        this.store.validateErr !== ""
+                            ? <div className="alert alert-danger" role="alert">{this.store.validateErr}</div>
+                            : void 0
+                    }
                 </div>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">Email address</label>
-                        <input
-                            name="email"
-                            onChange={this.handleChangeLogin}
-                            className="form-control"
-                            placeholder="Enter email"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Password</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            placeholder="Password"
-                            onChange={this.handleChangePassword}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Password</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            onChange={this.handleChangeRepeatPassword}
-                            placeholder="Password"/>
-                    </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                </form>
-                {
-                    this.store.validateErr !== ""
-                        ? <div className="alert alert-danger" role="alert">{this.store.validateErr}</div>
-                        : void 0
-                }
-            </div>
-        );
+            );
+        }
     }
 }
 
