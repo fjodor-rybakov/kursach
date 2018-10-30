@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import "./HomePageStyle.css";
 import {observer} from "mobx-react";
 import autobind from "autobind-decorator";
+
 @observer
 @autobind
 class HomePage extends Component {
@@ -22,7 +23,11 @@ class HomePage extends Component {
                             <Link className={"btn btn-primary"} id={"signup"} to={"/signup"}>Sign Up</Link>
                         </>
                     :
-                        <button className={"btn btn-primary"} id={"logout"} onClick={this.handleLogOut}>Log Out</button>}
+                        <>
+                            <Link className={"btn btn-primary"} id={"profile-button"} to={"profile"}>Profile</Link>
+                            <button className={"btn btn-primary"} id={"logout"} onClick={this.handleLogOut}>Log Out</button>
+                        </>
+                        }
                 </div>
                 <h1 className={"site-name"}>Order task</h1>
                 <div className={"about-us"}>
