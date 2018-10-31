@@ -25,7 +25,7 @@ module.exports = (server, database, secret) => {
         const data = JSON.parse(req.body);
         requestsDB.getProject(database, data, next)
             .then((data) => {
-                res.send(data[0]);
+                res.send(data);
             })
             .catch(() => {
                 res.send("err");

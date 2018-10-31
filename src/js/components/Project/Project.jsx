@@ -8,6 +8,7 @@ import {observable} from "mobx";
 @autobind
 class Project extends Component {
     @observable data = {};
+
     constructor(props) {
         super(props);
     }
@@ -24,9 +25,10 @@ class Project extends Component {
 
     render() {
         return (
-            <div>
-                {this.data.title}
-            </div>
+            <>
+                <h1>{this.data.title}</h1>
+                <button>add task</button>
+            </>
         );
     }
 }
