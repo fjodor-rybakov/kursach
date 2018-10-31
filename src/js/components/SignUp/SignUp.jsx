@@ -67,10 +67,10 @@ class SignUp extends Component {
             return (
                 <div className={"container"}>
                     <h1>Регистрация</h1>
-                    <div>
-                        <Link to={"/signin"}>Sign In</Link>
+                    <div className={"switch-authorization"}>
+                        <Link className={"btn btn-primary"} to={"/signin"}>Sign In</Link>
                     </div>
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit} className={"form"}>
                         <div className="form-group">
                             <label htmlFor="exampleInputEmail1">Email address</label>
                             <input
@@ -104,6 +104,7 @@ class SignUp extends Component {
                             ? <div className="alert alert-danger" role="alert">{this.store.validateErr}</div>
                             : void 0
                     }
+                    <Link className={"btn btn-primary"} to={"/"}>Back to home page</Link>
                 </div>
             );
         }
