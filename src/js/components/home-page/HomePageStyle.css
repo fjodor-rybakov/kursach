@@ -58,3 +58,11 @@ a:hover {
 .button-order {
     text-align: center;
 }
+
+.form {
+    margin-bottom: 20px;
+}
+
+.switch-authorization {
+    margin-bottom: 10px;
+}

@@ -20,7 +20,6 @@ class Project extends Component {
             .then(data => {
                 this.data = data;
             });
-        console.log(this.data);
     }
 
     render() {
