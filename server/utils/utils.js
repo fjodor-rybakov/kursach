@@ -13,4 +13,4 @@ exports.isset = function() {
         }
     }
     return true;
-}
+};

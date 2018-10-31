@@ -1,47 +1,9 @@
 const errs = require('restify-errors');
 
-/*module.exports = (server, database) => {
-    function isUserExist(email, next) {
-        const sql = `SELECT * FROM user WHERE email = '${email}'`;
-        database.query(sql, function (err, result) {
-            if (err) {
-                return next(new errs.BadGatewayError(err));
-            }
-            return (result.length !== 0);
-        });
-    }
-    async function addUser(data, res, next) {
-        if (await isUserExist(data.email, next)) {
-            res = false;
-            return;
-        }
-        const sql = `INSERT INTO user VALUES (null, '', '', 1, '', '${data.password}', '${data.email}', '')`;
-        database.query(sql, function (err) {
-            if (err) {
-                return next(new errs.BadGatewayError(err));
-            }
-        });
-        res = true;
-    }
-    server.post("/v1/signUp", (req, res, next) => {
-        const data = JSON.parse(req.body);
-        if (!isset(data.email, data.password)) {
-            return next(new errs.InvalidArgumentError("Not enough body data"));
-        }
-        let success = false;
-        addUser(data, success, next);
-        if (success) {
-            res.send("success")
-        } else {
-            res.send("email is already exist")
-        }
-    });
-};*/
-
 exports.addUser = function(database, data, next) {
     return new Promise(async (resolve, reject) => {
         let sql = `SELECT * FROM user WHERE email = '${data.email}'`;
-        database.query(sql, function (err, result) {
+        await database.query(sql, function (err, result) {
             if (err) {
                 return next(new errs.BadGatewayError(err));
             }
@@ -51,7 +13,7 @@ exports.addUser = function(database, data, next) {
         });
 
         sql = `INSERT INTO user VALUES (null, '', '', 1, '', '${data.password}', '${data.email}', '')`;
-        database.query(sql, function (err) {
+        await database.query(sql, function (err) {
             if (err) {
                 return next(new errs.BadGatewayError(err));
             }
@@ -63,7 +25,7 @@ exports.addUser = function(database, data, next) {
 exports.checkUser = function (database, data, next) {
     return new Promise(async (resolve, reject) => {
         let sql = `SELECT * FROM user WHERE email = '${data.email}' AND password = '${data.password}'`;
-        database.query(sql, function (err, result) {
+        await database.query(sql, function (err, result) {
             if (err) {
                 return next(new errs.BadGatewayError(err));
             }
@@ -79,7 +41,7 @@ exports.checkUser = function (database, data, next) {
 exports.getProfile = function (database, data, next) {
     return new Promise(async (resolve, reject) => {
         let sql = `SELECT * FROM user WHERE id_user = ${data.id}`;
-        database.query(sql, function (err, result) {
+        await database.query(sql, function (err, result) {
             if (err) {
                 return next(new errs.BadGatewayError(err));
             }
@@ -95,7 +57,7 @@ exports.getProfile = function (database, data, next) {
 exports.getProjects = function (database, next) {
     return new Promise(async (resolve, reject) => {
         let sql = `SELECT * FROM project`;
-        database.query(sql, function (err, result) {
+        await database.query(sql, function (err, result) {
             if (err) {
                 return next(new errs.BadGatewayError(err));
             }
@@ -107,7 +69,7 @@ exports.getProjects = function (database, next) {
 exports.getProject = function (database, data, next) {
     return new Promise(async (resolve, reject) => {
         let sql = `SELECT * FROM project WHERE id_project = ${data.id}`;
-        database.query(sql, function (err, result) {
+        await database.query(sql, function (err, result) {
             if (err) {
                 return next(new errs.BadGatewayError(err));
             }
@@ -116,6 +78,22 @@ exports.getProject = function (database, data, next) {
             } else {
                 return resolve(result[0]);
             }
+        })
+    })
+};
+
+exports.updateProfile = function (database, data) {
+    return new Promise(async (resolve, reject) => {
+        const sql = `UPDATE user SET 
+                        first_name = '${data.first_name}', 
+                        last_name = '${data.last_name}',
+                        email = '${data.email}' 
+                     WHERE id_user = '${data.id_user}'`;
+        await database.query(sql, function (err, result) {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(result);
         })
     })
 };

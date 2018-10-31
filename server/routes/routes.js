@@ -9,6 +9,7 @@ module.exports = (server, database, secret) => {
     server.post("/api/profile", getProfile);
     server.get("/api/getProjects", getProjectList);
     server.post("/api/getProject", getProject);
+    server.post("/api/updateProfile", updateProfile);
 
     function getProfile(req, res, next) {
         const data = JSON.parse(req.body);
@@ -72,6 +73,20 @@ module.exports = (server, database, secret) => {
             })
             .catch(() => {
                 return next(new errs.InvalidArgumentError("Unknown user"));
+            });
+    }
+
+    function updateProfile(req, res, next) {
+        const data = JSON.parse(req.body);
+        if (!utils.isset(data)) {
+            return next(new errs.InvalidArgumentError("Not enough body data"));
+        }
+        requestsDB.updateProfile(database, data)
+            .then(() => {
+                res.send("success");
+            })
+            .catch(() => {
+                return next(new errs.InvalidArgumentError("Request database error"));
             });
     }
 };

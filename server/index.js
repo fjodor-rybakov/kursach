@@ -20,7 +20,16 @@ server.use(plugins.queryParser());
 server.use(plugins.bodyParser());
 server.use(plugins.authorizationParser());
 server.use(rjwt(config.jwt).unless({
-    path: ['/api/signIn', '/api/signUp', '/', '/dist/bundle.js', '/api/profile', '/api/getProjects',  '/api/getProject' ]
+    path: [
+        '/',
+        '/dist/bundle.js',
+        '/api/signIn',
+        '/api/signUp',
+        '/api/profile',
+        '/api/getProjects',
+        '/api/getProject',
+        '/api/updateProfile'
+    ]
 }));
 
 server.on("restifyError", (req, res, err, callback) => { // Обработка ошибок сервера
