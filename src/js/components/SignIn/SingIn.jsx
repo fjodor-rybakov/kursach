@@ -21,9 +21,10 @@ class SingIn extends Component {
         });
         await fetch("/api/signIn", {method: "POST", body: data})
             .then(res => {
-                if (res.status === 200) {
-                    return res.json();
+                if (res.status !== 200) {
+                    return Promise.reject();
                 }
+                return res.json();
             })
             .then(data => this.handleAcceptUser(data))
             .catch(() => this.store.validateErr = "Такого пользователя не существует");
@@ -50,10 +51,10 @@ class SingIn extends Component {
             return (
                 <div className={"container"}>
                     <h1>Вход</h1>
-                    <div>
-                        <Link to={"/signup"}>Sign Up</Link>
+                    <div className={"switch-authorization"}>
+                        <Link className={"btn btn-primary"} to={"/signup"}>Sign Up</Link>
                     </div>
-                    <form>
+                    <form className={"form"}>
                         <div className={"form-group"}>
                             <label htmlFor={"login"}>Login</label>
                             <input
@@ -85,6 +86,7 @@ class SingIn extends Component {
                             ? <div className={"alert alert-danger"} role={"alert"}>{this.store.validateErr}</div>
                             : void 0
                     }
+                    <Link className={"btn btn-primary"} to={"/"}>Back to home page</Link>
                 </div>
             );
         }
