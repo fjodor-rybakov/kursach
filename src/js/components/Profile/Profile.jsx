@@ -46,7 +46,7 @@ class Profile extends Component {
     }
 
     changeEmail(event) {
-        this.store.emal = event.target.value;
+        this.store.email = event.target.value;
     }
 
     async saveDataProfile() {
