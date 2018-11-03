@@ -8,3 +8,7 @@
     width: 200px;
     box-shadow: none;
 }
+
+#photo-upload {
+    width: 270px;
+}

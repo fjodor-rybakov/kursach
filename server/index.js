@@ -10,15 +10,16 @@ const server = restify.createServer({
 
 let database = config.db.get;
 
-server.get("*", plugins.serveStatic({
+/*server.get("*", plugins.serveStatic({
     directory: "public", // раположение localhost(адрес)
     default: "index.html"
-}));
+}));*/
 
 server.use(plugins.acceptParser(server.acceptable));
 server.use(plugins.queryParser());
 server.use(plugins.bodyParser());
 server.use(plugins.authorizationParser());
+server.use(plugins.multipartBodyParser());
 server.use(rjwt(config.jwt).unless({
     path: [
         '/',
@@ -31,6 +32,11 @@ server.use(rjwt(config.jwt).unless({
         '/api/updateProfile'
     ]
 }));
+
+server.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    next();
+});
 
 server.on("restifyError", (req, res, err, callback) => { // Обработка ошибок сервера
     return callback();

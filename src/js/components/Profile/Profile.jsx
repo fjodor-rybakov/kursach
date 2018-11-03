@@ -84,9 +84,10 @@ class Profile extends Component {
         } else {
             return (
                 <div className={"container"}>
-                    <img src={"https://iupac.org/cms/wp-content/uploads/2018/05/default-avatar.png"}
-                         className={"image"}/>
                     <div className={"form-group"}>
+                        <img src={"https://iupac.org/cms/wp-content/uploads/2018/05/default-avatar.png"}
+                             className={"image"}/>
+                        <input type={"file"} className={"form-control"} id={"photo-upload"}/>
                         <input
                             className={"form-control"}
                             type={"text"}

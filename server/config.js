@@ -4,7 +4,7 @@ module.exports = {
     name: 'order task',
     version: '0.0.1',
     env: process.env.NODE_ENV || 'development',
-    port: process.env.PORT || 3000,
+    port: process.env.PORT || 3001,
     db: {
         get: mysql.createConnection({
             host     : 'www.db4free.net',
